@@ -5,7 +5,7 @@
 ## Overview
 Grafana.ReserveProxy is a reserve proxy for Grafana by .NET Core.
 
-Easy to you can access the Grafana in the Server hosted in localhost.
+Easy to you can access the Grafana in the Server hosted via localhost.
 
 ## Usage
 - Just download the [build](build) folder.
