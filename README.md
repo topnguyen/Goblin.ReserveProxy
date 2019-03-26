@@ -11,7 +11,7 @@ Easy to you can access the Grafana in the Server hosted via localhost.
 - Just download the [build](build) folder.
 - Adjust Grafana Endpoint (`ServiceRootUrl`) in the `appsettings.json`.
 - Deploy the `build` to your Server.
-- Run the proxy by `dotnet Grafana.ReserveProxy.dll` or you can host by IIS.
+- Run the proxy by `dotnet Grafana.ReserveProxy.dll` or you can host the Proxy via IIS.
 - After you access the Proxy, if face the `Unauthenticated` or `401` issue, 
 please access `<domain>/login` to signin into the Grafana Dashboard and everything will be fine.
 
