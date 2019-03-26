@@ -1,0 +1,49 @@
+##################################
+# IDEA Rider
+##################################
+.idea
+.idea.*
+
+##################################
+# Build Result
+##################################
+
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+[Pp]ublish/
+
+##################################
+# Other
+##################################
+
+*.user
+*.sln.docstates
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.bak
+*.cache
+*.ilk
+*.log
+*.sbr
+*.DotSettings
+*.rar
+*.zip
+*.7z
+_ReSharper*/
+.vs/
+packages/
+[Ll]ogs/
+!*[Ll]og/
+
+##################################
+# Specific
+##################################
+node_modules/
