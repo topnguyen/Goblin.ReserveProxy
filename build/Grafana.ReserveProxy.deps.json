@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "0c1912b0905d70cc88187405b4f334f70aaf5e13"
+    "signature": "80febd8f200fe312ab4d045e558bae38ae820656"
   },
   "compilationOptions": {
     "defines": [
@@ -24,7 +24,7 @@
     ".NETCoreApp,Version=v2.2": {
       "Grafana.ReserveProxy/1.0.0": {
         "dependencies": {
-          "Elect.Web.Middlewares": "2.5.0",
+          "Elect.Web.Middlewares": "2.5.1",
           "Microsoft.AspNetCore.All": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0"
         },
@@ -78,7 +78,7 @@
           "lib/netstandard2.0/Elect.Web.dll": {}
         }
       },
-      "Elect.Web.Middlewares/2.5.0": {
+      "Elect.Web.Middlewares/2.5.1": {
         "dependencies": {
           "Elect.Web": "2.5.0",
           "WebMarkupMin.AspNetCore2": "2.5.0",
@@ -4002,12 +4002,12 @@
       "path": "elect.web/2.5.0",
       "hashPath": "elect.web.2.5.0.nupkg.sha512"
     },
-    "Elect.Web.Middlewares/2.5.0": {
+    "Elect.Web.Middlewares/2.5.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-MzGIAi1lW8hr0AVSAOILh+BoSEcmbYcqCwfmo4tanoXU5wMNKYdMs0TyFQTIm6FhcGW7ilSz6u6TGKYXAhM/TA==",
-      "path": "elect.web.middlewares/2.5.0",
-      "hashPath": "elect.web.middlewares.2.5.0.nupkg.sha512"
+      "sha512": "sha512-RCo/CS1AIqLULTjnvXGWecofjyd8252AbPkcMzOWGhxl4uiP7EhNgza9vdmPg6tjOr76xFbmvsyNRLCyAQkNpg==",
+      "path": "elect.web.middlewares/2.5.1",
+      "hashPath": "elect.web.middlewares.2.5.1.nupkg.sha512"
     },
     "Enums.NET/2.3.2": {
       "type": "package",
