@@ -15,9 +15,5 @@ Easy to you can access the Grafana in the Server hosted via localhost.
 - After you access the Proxy, if face the `Unauthenticated` or `401` issue, 
 please access `<domain>/login` to signin into the Grafana Dashboard and everything will be fine.
 
-## Note
-Feel free to adjust the code in the file [ReverseProxyMiddleware](src/Grafana.ReserveProxy/ReverseProxyMiddleware.cs)
- to fit with your business.
-
 ## License
 Grafana.ReserveProxy is licensed under the [MIT License](LICENSE).
