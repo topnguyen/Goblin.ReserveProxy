@@ -1,9 +1,11 @@
-﻿using Elect.Web.Middlewares.HttpContextMiddleware;
+﻿using System;
+using Elect.Web.Middlewares.HttpContextMiddleware;
 using Elect.Web.Middlewares.MeasureProcessingTimeMiddleware;
 using Elect.Web.Middlewares.ReverseProxyMiddleware;
 using Elect.Web.Middlewares.ServerInfoMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,7 +25,8 @@ namespace Grafana.ReserveProxy
         {
             services.AddElectReserveProxy(_ =>
             {
-                _.ServiceRootUrl = "http://127.0.0.1:8080"; // "http://127.0.0.1:3000"
+                _.ServiceRootUrl = "http://127.0.0.1:8080/"; // "http://127.0.0.1:3000/"
+                _.AfterReserveProxy = context => { Console.WriteLine(context.Request.GetDisplayUrl()); };
             });
         }
 
