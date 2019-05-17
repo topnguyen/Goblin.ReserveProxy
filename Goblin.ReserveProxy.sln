@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Solution Items", "Soluti
 		Logo.png = Logo.png
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grafana.ReserveProxy", "src\Grafana.ReserveProxy\Grafana.ReserveProxy.csproj", "{3816AA67-A078-4A99-884D-2B2BC435E9BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Goblin.ReserveProxy", "src\Goblin.ReserveProxy\Goblin.ReserveProxy.csproj", "{3816AA67-A078-4A99-884D-2B2BC435E9BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

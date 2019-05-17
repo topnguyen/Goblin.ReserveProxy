@@ -1,19 +1,16 @@
 ![Logo](Logo.png)
-# Grafana.ReserveProxy
+# Goblin.ReserveProxy
 > Author [**Top Nguyen**](http://topnguyen.net)
 
 ## Overview
-Grafana.ReserveProxy is a reserve proxy for Grafana by .NET Core.
+Goblin.ReserveProxy is a reserve proxy for Goblin by .NET Core.
 
-Easy to you can access the Grafana in the Server hosted via localhost.
+Easy to you can access the Goblin in the Server hosted via localhost.
 
 ## Usage
-- Just download the [build](build) folder.
-- Adjust Grafana Endpoint (`ServiceRootUrl`) in the `appsettings.json`.
-- Deploy the `build` to your Server.
-- Run the proxy by `dotnet Grafana.ReserveProxy.dll` or you can host the Proxy via IIS.
-- After you access the Proxy, if face the `Unauthenticated` or `401` issue, 
-please access `<domain>/login` to signin into the Grafana Dashboard and everything will be fine.
+- Adjust Endpoint (`ServiceRootUrl`) in Startup.cs
+- Deploy to your Server.
+- Run the proxy by `dotnet Goblin.ReserveProxy.dll` or you can host the Proxy via IIS.
 
 ## License
-Grafana.ReserveProxy is licensed under the [MIT License](LICENSE).
+Goblin.ReserveProxy is licensed under the [MIT License](LICENSE).

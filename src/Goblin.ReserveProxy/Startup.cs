@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Grafana.ReserveProxy
+namespace Goblin.ReserveProxy
 {
     public class Startup
     {
@@ -25,7 +25,7 @@ namespace Grafana.ReserveProxy
         {
             services.AddElectReserveProxy(_ =>
             {
-                _.ServiceRootUrl = "http://127.0.0.1:8080/"; // "http://127.0.0.1:3000/"
+                _.ServiceRootUrl = "http://127.0.0.1:16686/";
                 _.AfterReserveProxy = context => { Console.WriteLine(context.Request.GetDisplayUrl()); };
             });
         }
