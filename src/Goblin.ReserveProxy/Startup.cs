@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using Elect.Core.ConfigUtils;
 using Elect.Web.Middlewares.HttpContextMiddleware;
 using Elect.Web.Middlewares.MeasureProcessingTimeMiddleware;
 using Elect.Web.Middlewares.ReverseProxyMiddleware;
@@ -13,30 +15,45 @@ namespace Goblin.ReserveProxy
 {
     public class Startup
     {
+        private IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddElectReserveProxy(_ =>
             {
-                _.ServiceRootUrl = "http://127.0.0.1:16686/";
-                _.AfterReserveProxy = context => { Console.WriteLine(context.Request.GetDisplayUrl()); };
+                var destinationEndpoint = Configuration.GetValueByEnv<string>("DestinationEndpoint");
+
+                bool isValidUri = Uri.TryCreate(destinationEndpoint, UriKind.Absolute, out var destinationUri);
+
+                if (!isValidUri)
+                {
+                    throw new InvalidConstraintException("Your destination domain is not valid absolute URI");
+                }
+                
+                _.ServiceRootUrl = destinationUri.ToString();
+
+                _.BeforeReserveProxy = context =>
+                {
+                    Console.WriteLine($"[Before Reserve] {context.Request.GetDisplayUrl()}");
+                    return true;
+                };
+                
+                _.AfterReserveProxy = context =>
+                {
+                    Console.WriteLine($"[After Reserve] {context.Request.GetDisplayUrl()}");
+                };
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDeveloperExceptionPage();
 
             app.UseElectHttpContext();
 
