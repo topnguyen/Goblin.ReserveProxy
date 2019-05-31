@@ -5,9 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Elect.Web.Middlewares">
-          <Version>2.7.2</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.All" />
+        <PackageReference Include="Microsoft.AspNetCore.All"/>
+        <PackageReference Include="ProxyKit" Version="2.0.4"/>
+        <PackageReference Include="Elect.Core" Version="2.7.2"/>
     </ItemGroup>
 </Project>
