@@ -18,6 +18,7 @@ namespace Goblin.ReserveProxy
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddProxy();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
