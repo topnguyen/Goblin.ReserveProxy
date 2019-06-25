@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Elect.Core.Constants;
 using Elect.Core.EnvUtils;
 using Microsoft.AspNetCore.HostFiltering;
 using Microsoft.AspNetCore.Hosting;
@@ -13,22 +14,23 @@ using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Goblin.ReserveProxy
 {
-  public static class Program
+    public static class Program
     {
         public static async Task Main(string[] args)
         {
             SetConsoleAppInfo();
-            
+
             var webHostBuilder = CreateWebHostBuilder(args);
 
             var webHost = webHostBuilder.Build();
 
             await webHost.RunAsync();
         }
-        
+
         public static void SetConsoleAppInfo()
         {
-            var appInfo = $@"{PlatformServices.Default.Application.ApplicationName} v{PlatformServices.Default.Application.ApplicationVersion} ({EnvHelper.CurrentEnvironment})";
+            var appInfo =
+                $@"{PlatformServices.Default.Application.ApplicationName} v{PlatformServices.Default.Application.ApplicationVersion} ({EnvHelper.CurrentEnvironment})";
 
             Console.Title = appInfo;
 
@@ -40,22 +42,21 @@ namespace Goblin.ReserveProxy
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            var builder = new WebHostBuilder();
+            var webHostBuilder = new WebHostBuilder();
 
             if (args?.Any() == true)
             {
                 var config = new ConfigurationBuilder().AddCommandLine(args).Build();
 
-                builder.UseConfiguration(config);
+                webHostBuilder.UseConfiguration(config);
             }
 
             // Kestrel
-            builder.UseKestrel((context, options) =>
+            webHostBuilder.UseKestrel((context, options) =>
             {
                 options.AddServerHeader = false;
 
-                // Listen
-                var listenUrls = builder.GetSetting(WebHostDefaults.ServerUrlsKey);
+                var listenUrls = webHostBuilder.GetSetting(WebHostDefaults.ServerUrlsKey);
 
                 if (string.IsNullOrWhiteSpace(listenUrls))
                 {
@@ -65,30 +66,30 @@ namespace Goblin.ReserveProxy
             });
 
             // Content
-            var contentRoot = builder.GetSetting(WebHostDefaults.ContentRootKey);
+            var contentRoot = webHostBuilder.GetSetting(WebHostDefaults.ContentRootKey);
             if (string.IsNullOrWhiteSpace(contentRoot))
             {
-                builder.UseContentRoot(Directory.GetCurrentDirectory());
+                webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory());
             }
 
             // Capture Error
-            builder.CaptureStartupErrors(true);
+            webHostBuilder.CaptureStartupErrors(true);
 
             // DI Validate
-            builder.UseDefaultServiceProvider((context, options) =>
+            webHostBuilder.UseDefaultServiceProvider((context, options) =>
             {
                 options.ValidateScopes = context.HostingEnvironment.IsDevelopment();
             });
 
             // App Config
-            builder.ConfigureAppConfiguration((context, configBuilder) =>
+            webHostBuilder.ConfigureAppConfiguration((context, configBuilder) =>
             {
                 // Delete all default configuration providers
                 configBuilder.Sources.Clear();
 
                 configBuilder.SetBasePath(Directory.GetCurrentDirectory());
 
-                configBuilder.AddJsonFile(Elect.Core.Constants.ConfigurationFileName.AppSettings, true, true);
+                configBuilder.AddJsonFile(ConfigurationFileName.AppSettings, true, true);
 
                 var env = context.HostingEnvironment;
 
@@ -111,9 +112,11 @@ namespace Goblin.ReserveProxy
             });
 
             // Service Config
-            builder.ConfigureServices((context, services) =>
+
+            webHostBuilder.ConfigureServices((context, services) =>
             {
                 // Hosting Filter
+
                 services.PostConfigure<HostFilteringOptions>(options =>
                 {
                     if (options.AllowedHosts != null && options.AllowedHosts.Count != 0)
@@ -122,15 +125,19 @@ namespace Goblin.ReserveProxy
                     }
 
                     var hosts = context
-                                .Configuration["AllowedHosts"]?
-                                .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
+                        .Configuration["AllowedHosts"]?
+                        .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
 
                     options.AllowedHosts = (hosts?.Length > 0 ? hosts : new[] {"*"});
                 });
 
                 // Hosting Filter Notification
-                var hostingFilterOptions = new ConfigurationChangeTokenSource<HostFilteringOptions>(context.Configuration);
+
+                var hostingFilterOptions =
+                    new ConfigurationChangeTokenSource<HostFilteringOptions>(context.Configuration);
+
                 services.AddSingleton<IOptionsChangeTokenSource<HostFilteringOptions>>(hostingFilterOptions);
+
                 services.AddTransient<IStartupFilter, HostFilteringStartupFilter>();
 
                 // IIS
@@ -140,21 +147,21 @@ namespace Goblin.ReserveProxy
 
                 if (isUseIis)
                 {
-                    builder.UseIIS();
+                    webHostBuilder.UseIIS();
                 }
 
                 var isUseIisIntegration = iisConfig?.GetValue("IsUseIISIntegration", false) ?? false;
 
                 if (isUseIisIntegration)
                 {
-                    builder.UseIISIntegration();
+                    webHostBuilder.UseIISIntegration();
                 }
             });
-            
-            // Startup
-            builder.UseStartup(PlatformServices.Default.Application.ApplicationName);
 
-            return builder;
+            // Startup
+            webHostBuilder.UseStartup(PlatformServices.Default.Application.ApplicationName);
+
+            return webHostBuilder;
         }
     }
 }
