@@ -17,10 +17,14 @@ namespace Goblin.ReserveProxy
     public class Startup
     {
         private IConfiguration Configuration { get; }
+        
+        private readonly string _destinationEndpoint;
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
+            _destinationEndpoint = configuration.GetValueByEnv<string>("DestinationEndpoint");
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -70,11 +74,14 @@ namespace Goblin.ReserveProxy
             // Server Info
             app.UseElectServerInfo();
 
-            // Proxy
-            var destinationEndpoint = Configuration.GetValueByEnv<string>("DestinationEndpoint");
+            // Proxy - Authentication
+            app.UseMiddleware<GoblinProxyMiddleware>();
+
+            // Proxy - Forward
 
             app.RunProxy(context => context
-                .ForwardTo(destinationEndpoint)
+                .ForwardTo(_destinationEndpoint)
+                .CopyXForwardedHeaders()
                 .AddXForwardedHeaders()
                 .Send());
         }
