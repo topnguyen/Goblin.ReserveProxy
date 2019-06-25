@@ -16,11 +16,14 @@ Easy to you can access the Goblin in the Server hosted via localhost.
 - Adjust Proxy Authentication (`ProxyAuthentication`) in `appsettings.json`.
     + Bearer Token
         * In Header: Set key `Authorization` with the value is `Bearer <AccessToken>`.
+            > Sample: `Authorization`:`Bearer accessTokenSample`
         * In Query: Set key `token` with the value is `<AccessToken>`.
+            > Sample: `<proxy domain>?token=accessTokenSample`
     + Basic Authentication
         * In Header: Set key `Authorization` with the value is `Basic <UserName>:<Password>`.
+            > Sample: `Authorization`:`Basic usernameSample:passwordSample`
         * In Query: Set key `username` with the value is `<UserName>` and set key `password` with the value is `<Password>`.
-
+            > Sample: `<proxy domain>?username=usernameSample&password=passwordSample`
 - Deploy Proxy (Copy build package) to your Server.
 
 - Run the proxy by `dotnet Goblin.ReserveProxy.dll` or you can host the Proxy via IIS.
