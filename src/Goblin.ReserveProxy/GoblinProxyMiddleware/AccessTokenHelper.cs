@@ -1,3 +1,4 @@
+using System.Linq;
 using Elect.Web.Models;
 using Goblin.ReserveProxy.Models;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,7 @@ namespace Goblin.ReserveProxy.GoblinProxyMiddleware
             var isValidAuthInQuery = IsValidAuthInQuery(context, proxyAuthenticationModel);
 
             var isValidAuth = isValidAuthInCookie || isValidAuthInHeader || isValidAuthInQuery;
-            
+
             return isValidAuth;
         }
 
@@ -30,7 +31,8 @@ namespace Goblin.ReserveProxy.GoblinProxyMiddleware
         {
             if (context.Request.Cookies.TryGetValue(HeaderKey.Authorization, out var accessToken))
             {
-                return accessToken?.Trim() == proxyAuthenticationModel.AccessToken;
+                accessToken = accessToken.Replace("+", " ");
+                return accessToken?.Trim().Split(" ").LastOrDefault() == proxyAuthenticationModel.AccessToken;
             }
 
             return false;
@@ -40,7 +42,7 @@ namespace Goblin.ReserveProxy.GoblinProxyMiddleware
         {
             if (context.Request.Headers.TryGetValue(HeaderKey.Authorization, out var accessToken))
             {
-                return accessToken.ToString()?.Trim() == proxyAuthenticationModel.AccessToken;
+                return accessToken.ToString()?.Trim().Split(" ").LastOrDefault() == proxyAuthenticationModel.AccessToken;
             }
 
             return false;

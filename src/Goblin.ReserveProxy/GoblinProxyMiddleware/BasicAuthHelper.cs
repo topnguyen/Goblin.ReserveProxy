@@ -25,7 +25,7 @@ namespace Goblin.ReserveProxy.GoblinProxyMiddleware
             
             return isValidAuth;
         }
-        
+
         private static bool IsValidAuthInCookie(HttpContext context, ProxyAuthenticationModel proxyAuthenticationModel)
         {
             if (!context.Request.Cookies.TryGetValue(HeaderKey.Authorization, out var basicAuth))
@@ -33,7 +33,9 @@ namespace Goblin.ReserveProxy.GoblinProxyMiddleware
                 return false;
             }
             
-            var basicAuthParams = basicAuth.Trim().Split(" ").LastOrDefault()?.Split(":").ToList();
+            basicAuth = basicAuth.Replace("+", " ");
+            
+            var basicAuthParams = basicAuth?.Trim().Split(" ").LastOrDefault()?.Split(":").ToList();
 
             if (basicAuthParams?.Count != 2)
             {

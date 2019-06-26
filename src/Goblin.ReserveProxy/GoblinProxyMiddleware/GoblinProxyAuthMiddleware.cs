@@ -1,20 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Elect.Core.ConfigUtils;
-using Elect.Web.Models;
+using Elect.Web.HttpUtils;
 using Goblin.ReserveProxy.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace Goblin.ReserveProxy.GoblinProxyMiddleware
 {
-    public class GoblinProxyMiddleware
+    public class GoblinProxyAuthMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ProxyAuthenticationModel _proxyAuthenticationModel;
 
 
-        public GoblinProxyMiddleware(RequestDelegate next, IConfiguration configuration)
+        public GoblinProxyAuthMiddleware(RequestDelegate next, IConfiguration configuration)
         {
             _next = next;
             _proxyAuthenticationModel = configuration.GetSection<ProxyAuthenticationModel>("ProxyAuthentication");
@@ -31,22 +30,19 @@ namespace Goblin.ReserveProxy.GoblinProxyMiddleware
                 return;
             }
 
+            if (context.Request.IsRequestFor("favicon.ico"))
+            {
+                await _next.Invoke(context).ConfigureAwait(true);
+
+                return;
+            }
+
             var isValidAuthByAccessToken = AccessTokenHelper.IsValidAuth(context, _proxyAuthenticationModel);
 
             if (isValidAuthByAccessToken)
             {
                 await _next.Invoke(context).ConfigureAwait(true);
                 
-                context.Response.Cookies.Append(HeaderKey.Authorization, $"Bearer {_proxyAuthenticationModel.AccessToken}", new CookieOptions
-                {
-                    Path = "/",
-                    IsEssential = true,
-                    SameSite = SameSiteMode.None,
-                    Expires = DateTimeOffset.Now.AddMonths(1),
-                    HttpOnly = true,
-                    Secure = false 
-                });
-
                 return;
             }
 
@@ -56,22 +52,12 @@ namespace Goblin.ReserveProxy.GoblinProxyMiddleware
             {
                 await _next.Invoke(context).ConfigureAwait(true);
                 
-                context.Response.Cookies.Append(HeaderKey.Authorization, $"Basic {_proxyAuthenticationModel.UserName}:{_proxyAuthenticationModel.Password}", new CookieOptions
-                {
-                    Path = "/",
-                    IsEssential = true,
-                    SameSite = SameSiteMode.None,
-                    Expires = DateTimeOffset.Now.AddMonths(1),
-                    HttpOnly = true,
-                    Secure = false 
-                });
-
                 return;
             }
 
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-
-            await context.Response.WriteAsync(string.Empty).ConfigureAwait(true);
+            
+            await context.Response.WriteAsync("Unauthentication").ConfigureAwait(true);
         }
     }
 }
