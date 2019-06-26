@@ -108,6 +108,13 @@ namespace Goblin.ReserveProxy
                 {
                     return response;
                 }
+                
+                if (string.IsNullOrWhiteSpace(_proxyAuthenticationModel.AccessToken) &&
+                    string.IsNullOrWhiteSpace(_proxyAuthenticationModel.UserName) &&
+                    string.IsNullOrWhiteSpace(_proxyAuthenticationModel.Password))
+                {
+                    return response;
+                }
 
                 var accessTokenCookieValue = HttpUtility.UrlEncode($"Bearer {_proxyAuthenticationModel.AccessToken}");
                 
@@ -125,7 +132,6 @@ namespace Goblin.ReserveProxy
                 
                 var cookieBuilder = new StringBuilder();
 
-                
                 cookieBuilder.Append($"{HttpUtility.UrlEncode(HeaderKey.Authorization)}={accessTokenCookieValue}"); 
                    
                 cookieBuilder.Append("; HttpOnly");
