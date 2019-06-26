@@ -7,6 +7,7 @@ using Elect.Web.Middlewares.MeasureProcessingTimeMiddleware;
 using Elect.Web.Middlewares.ServerInfoMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -47,6 +48,13 @@ namespace Goblin.ReserveProxy
             
             // Cors
             services.AddElectCors();
+            
+            // Enable Cookie
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
             // Proxy
             services.AddProxy();
@@ -75,7 +83,7 @@ namespace Goblin.ReserveProxy
             app.UseElectServerInfo();
 
             // Proxy - Authentication
-            app.UseMiddleware<GoblinProxyMiddleware>();
+            app.UseMiddleware<GoblinProxyMiddleware.GoblinProxyMiddleware>();
 
             // Proxy - Forward
 
