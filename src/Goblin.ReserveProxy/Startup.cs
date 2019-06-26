@@ -113,7 +113,7 @@ namespace Goblin.ReserveProxy
                 
                 // Check existing cookie value is correct, then no need to set cookie again
                 
-                if (context.Request.Headers.TryGetValue(HeaderKey.Authorization, out var existingCookieValue))
+                if (context.Request.Cookies.TryGetValue(HeaderKey.Authorization, out var existingCookieValue))
                 {
                     if (existingCookieValue == accessTokenCookieValue)
                     {
