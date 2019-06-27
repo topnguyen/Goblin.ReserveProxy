@@ -3,7 +3,7 @@ using Elect.Web.Models;
 using Goblin.ReserveProxy.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Goblin.ReserveProxy.GoblinProxyMiddleware
+namespace Goblin.ReserveProxy.Auth
 {
     public static class AccessTokenHelper
     {

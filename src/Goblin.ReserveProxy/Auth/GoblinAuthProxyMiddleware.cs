@@ -5,15 +5,15 @@ using Goblin.ReserveProxy.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace Goblin.ReserveProxy.GoblinProxyMiddleware
+namespace Goblin.ReserveProxy.Auth
 {
-    public class GoblinProxyAuthMiddleware
+    public class GoblinAuthProxyMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ProxyAuthenticationModel _proxyAuthenticationModel;
 
 
-        public GoblinProxyAuthMiddleware(RequestDelegate next, IConfiguration configuration)
+        public GoblinAuthProxyMiddleware(RequestDelegate next, IConfiguration configuration)
         {
             _next = next;
             _proxyAuthenticationModel = configuration.GetSection<ProxyAuthenticationModel>("ProxyAuthentication");
@@ -57,7 +57,7 @@ namespace Goblin.ReserveProxy.GoblinProxyMiddleware
 
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             
-            await context.Response.WriteAsync("Unauthentication").ConfigureAwait(true);
+            await context.Response.WriteAsync(string.Empty).ConfigureAwait(true);
         }
     }
 }

@@ -9,7 +9,7 @@ using Elect.Web.Middlewares.HttpContextMiddleware;
 using Elect.Web.Middlewares.MeasureProcessingTimeMiddleware;
 using Elect.Web.Middlewares.ServerInfoMiddleware;
 using Elect.Web.Models;
-using Goblin.ReserveProxy.GoblinProxyMiddleware;
+using Goblin.ReserveProxy.Auth;
 using Goblin.ReserveProxy.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -93,7 +93,7 @@ namespace Goblin.ReserveProxy
             app.UseElectServerInfo();
 
             // Proxy - Authentication
-            app.UseMiddleware<GoblinProxyAuthMiddleware>();
+            app.UseMiddleware<GoblinAuthProxyMiddleware>();
 
             // Proxy - Forward
             app.RunProxy(async context =>
